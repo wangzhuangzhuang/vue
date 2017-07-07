@@ -1,99 +1,56 @@
 <template>
-  <div class="header">
-    <div class="content-wrapper">
-      <div class="avatar">
-        <img width="64" height="64" :src="seller.avatar">
-      </div>
-      <div class="content">
-        <div class="title">
-          <span class="brand"></span>
-          <span class="name">{{seller.name}}</span>
-        </div>
-        <div class="description">
-          {{seller.description}}/{{seller.deliveryTime}}分钟送达
-        </div>
-        <div v-if="seller.supports" class="support">
-          <span class="icon" :class="classMap[seller.supports[0].type]"></span>
-          <span class="text">{{seller.supports[0].description}}</span>
-        </div>
-      </div>
-      <div v-if="seller.supports" class="supports-count" @click="showDetail">
-        <span class="count">{{seller.supports.length}}个</span>
-        <i class="icon iconfont icon-zuoyoujiantou"></i>
-      </div>
-    </div>
-    <div class="bulletin-wrapper" @click="showDetail">
-      <span class="bulletin-title"></span><span class="bulletin-text">{{seller.bulletin}}</span>
-      <i class="icon iconfont icon-zuoyoujiantou"></i>
-    </div>
-    <div class="background">
-      <img :src="seller.avatar" alt="" class="" width="100%" height="100%">
-    </div>
-    <transition name="fade">
-    <div v-show="detailShow" class="detail" @click="hideDetail" transition="fade">
-      <div class="detail-wrapper clearFix">
-        <div class="detail-main">
-          <h1 class="name">{{seller.name}}</h1>
-          <div class="star-wrapper">
-            <star :size="48" :score="seller.score"></star>
-          </div>
-          <div class="title">
-            <div class="line"></div>
-            <div class="text">优惠信息</div>
-            <div class="line"></div>
-          </div>
-          <ul v-if="seller.supports" class="supports">
-            <li class="support-item" v-for="(item, index) in seller.supports">
-              <span class="icon" :class="classMap[seller.supports[index].type]"></span>
-              <span class="text">{{seller.supports[index].description}}</span>
-            </li>
-          </ul>
-          <div class="title">
-            <div class="line"></div>
-            <div class="text">商家公告</div>
-            <div class="line"></div>
-          </div>
-          <div class="bulletin">
-            <p class="content">{{seller.bulletin}}</p>
-          </div>
-        </div>
-      </div>
-      <div class="detail-close" @click="hideDetail">
-        <i class="iconfont icon-cha"></i>
-      </div>
-    </div>
-    </transition>
-  </div>
-</template>
-<script type="text/ecmascript-6">
-  import star from '../star/star.vue';
-  export default {
-    props: {
-      seller: {
-        type: Object
+ <div class="header" v-bind:style="{opacity:number}">
+    <div class="left"></div>
+      {{text}}
+    <div class="right"></div>
+ </div>
+</template>  
+<script>
+ export default {
+    props:  {
+      text: {
+        type: String
       }
     },
     data() {
-      return {
-        detailShow: false
-      };
+       return {
+          scroll: '',
+          number:1
+       };
     },
     methods: {
-      showDetail() {
-        this.detailShow = true;
-      },
-      hideDetail() {
-        this.detailShow = false;
-      }
+       menu() {
+        this.scroll = document.body.scrollTop;
+        let H = 300;
+        this.number =1-(this.scroll/300);
+       
+       }
     },
-    created() {
-      this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
-    },
-    components: {
-      star
+    mounted() {
+      window.addEventListener('scroll', this.menu);
     }
   };
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "header.styl";
+   .header{
+   	  width: 100%;
+   	  height: 45px;
+   	  background: red;
+   	  position:fixed;
+   	  top:0;
+   	  left: 0;
+      line-height: 45px;
+      text-align: center;
+      z-index: 9999999
+   }
+   .left,.right{
+      width: 45px;
+      height: 45px;
+      background: #000;
+      float:left;
+   }
+   .right{
+    float:right;
+    background: #686868;
+   }
 </style>
