@@ -32,5 +32,5 @@ webpack(webpackConfig, function (err, stats) {
     children: false,
     chunks: false,
     chunkModules: false
-  }) + '\n')
+  }) + '.\n')
 })
